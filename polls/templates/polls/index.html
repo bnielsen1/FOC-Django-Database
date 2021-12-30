@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="{% url 'polls:po_list' %}">POs</a> <br>
+    Shippments <br>
+    Ordered Parts <br>
+    ------------- <br>
+    Create PO <br>
+    Create Shippment <br> 
+    ------------- <br>
+    Add to parts list <br>
+    Add to vendor list <br>
+    ------------- <br>
+    <a href="{% url 'polls:part_list' %}">View parts list</a> <br>
+    <a href="{% url 'polls:vendor_list' %}">View vendor list</a> <br>
+</body>
+</html>

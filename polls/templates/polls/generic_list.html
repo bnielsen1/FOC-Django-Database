@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+{% if data %}
+    <h2>{{ title }} - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+
+    <table>
+        <ul>
+            <tr>
+                {% for field, value in data.0.fields.items %}
+                    <th>{{ field }}</th>
+                {% endfor %}
+            </tr>
+        </ul>
+
+        <ul>
+        {% for object in data %}
+            <tr>
+                <ul>
+                    {% for field, value in object.fields.items %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                </ul>
+            </tr>
+        {% endfor %}
+        </ul>
+
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+</body>
+</html>
