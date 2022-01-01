@@ -30,7 +30,6 @@ class Vendor(models.Model):
 
 class Shippment(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
-    ordered_parts = models.ManyToManyField
     date_shipped = models.DateTimeField('date shipped')
     date_received = models.DateTimeField('date received')
     shipped_from = models.CharField(max_length=16)
@@ -43,7 +42,13 @@ class Shippment(models.Model):
 
 class OrderedPart(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
-    shippment = models.ForeignKey(Shippment, on_delete=models.SET_NULL, auto_created=False, blank=True, null=True)
+    shippment = models.ForeignKey(
+        Shippment, 
+        on_delete=models.SET_NULL, 
+        auto_created=False, 
+        blank=True, 
+        null=True
+        )
     is_shipped = models.BooleanField(default=False)
     part_number = models.CharField(max_length=32)
     part_name = models.CharField(max_length=32)

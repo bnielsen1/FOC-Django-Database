@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('po/', views.po_list, name='po_list'),
     path('po/<int:po_id>/', views.po_view, name='po_view'),
+    path('po/<int:po_id>/create_shippment', views.shippment_from_po, name='shippment_from_po'),
     path('parts/', views.part_list, name='part_list'),
     path('vendors/', views.vendor_list, name='vendor_list')
 ]
