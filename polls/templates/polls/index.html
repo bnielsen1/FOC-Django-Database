@@ -8,14 +8,14 @@
 </head>
 <body>
     <a href="{% url 'polls:po_list' %}">Open POs</a> <br>
-    Shippments <br>
+    <a href="{% url 'polls:shippment_list' %}">Shippments</a> <br>
     Ordered Parts <br>
     ------------- <br>
     Create PO <br>
     Create Shippment <br> 
     ------------- <br>
-    Add to parts list <br>
-    Add to vendor list <br>
+    <a href="{% url 'polls:part_add' %}">Add to parts list</a> <br>
+    <a href="{% url 'polls:vendor_add' %}">Add to vendor list</a> <br>
     ------------- <br>
     <a href="{% url 'polls:part_list' %}">View parts list</a> <br>
     <a href="{% url 'polls:vendor_list' %}">View vendor list</a> <br>

@@ -22,7 +22,9 @@ tr:nth-child(even) {
 <body>
 
 {% if vendor_list %}
-    <h2>All Known Vendors - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+    <h2>All Known Vendors - <a href="{% url 'polls:index' %}">(Go back)</a> - 
+      <a href="{% url 'polls:vendor_add' %}">(Add Vendor)</a>
+    </h2>
 
     <table>
         <tr>

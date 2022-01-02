@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+{% if shippment_list %}
+    <h2>All Shippments - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+
+    <table>
+        <ul>
+            <tr>
+                <th>PO</th>
+                <th>Ordered Parts</th>
+                <th>Quantity Received</th>
+                <th>Quantity Expected</th>
+                <th>Date Shipped</th>
+                <th>Date Received</th>
+                <th>Shipped From</th>
+                <th>Shipped To</th>
+                <th>Shipper Receiver ID</th>
+                <th>Description</th>
+                <th>Manager</th>
+                <th>Notes</th>
+                <th>Due Date</th>
+            </tr>
+        </ul>
+
+        <ul>
+        {% for shippment in shippment_list %}
+            <tr>
+                <ul>
+                    <td><a href="{% url 'polls:po_view' shippment.po.po_number %}">{{ shippment.po.po_number }}</a></td>
+                    <td>{% for part in shippment.orderedpart_set.all %}
+                            {% if part.is_shipped %}
+                                <l style="color:green;">{{ part.part.number }}, </style>
+                            {% else %}
+                                <l style="color:red;">{{ part.part.number }}, </style>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for part in shippment.orderedpart_set.all %}
+                            {% if part.is_shipped %}
+                                <l style="color:green;">{{ part.quantity_received }}, </style>
+                            {% else %}
+                                <l style="color:red;">{{ part.quantity_received }}, </style>
+                            {% endif %} 
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for part in shippment.orderedpart_set.all %}
+                            {% if part.is_shipped %}
+                                <l style="color:green;">{{ part.quantity_expected }}, </style>
+                            {% else %}
+                                <l style="color:red;">{{ part.quantity_expected }}, </style>
+                            {% endif %} 
+                        {% endfor %}
+                    </td>
+                    <td>{{ shippment.date_shipped }}</td>
+                    <td>{{ shippment.date_received }}</td>
+                    <td>{{ shippment.shipped_from }}</td>
+                    <td>{{ shippment.shipped_to }}</td>
+                    <td>{{ shippment.shipper_receiver_id }}</td>
+                    <td>{{ shippment.description }}</td>
+                    <td>{{ shippment.manager }}</td>
+                    <td>{{ shippment.notes }}</td>
+                    <td>{{ shippment.due_date }}</td>
+                </ul>
+            </tr>
+        {% endfor %}
+        </ul>
+
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+</body>
+</html>

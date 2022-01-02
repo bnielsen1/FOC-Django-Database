@@ -27,11 +27,12 @@ class POShippmentForm(forms.Form):
     notes = forms.CharField(max_length=256, required=False)
     due_date = forms.DateField(widget=DatePickerInput, required=False)
 
-class PartForm(forms.Form):
+class PartForm(forms.ModelForm):
+    class Meta:
+        model = Part
+        fields = ['number', 'name', 'vendor']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['vendor'] = forms.ModelChoiceField(Vendor)
-
-    number = forms.CharField(max_length=32)
-    part_name = models.CharField(max_length=32)
+class VendorForm(forms.ModelForm):
+    class Meta:
+        model = Vendor
+        fields = ['vendor_name', 'vendor_id', 'address']

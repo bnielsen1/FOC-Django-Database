@@ -9,7 +9,7 @@ import datetime
 from django.utils import timezone
 
 from .models import PO, Part, Shippment, Vendor
-from .forms import POShippmentForm, PartForm
+from .forms import POShippmentForm, PartForm, VendorForm
 
 def index(request):
     return render(request, 'polls/index.html')
@@ -33,25 +33,41 @@ def part_add(request):
     if request.method == 'POST':
         form = PartForm(request.POST)
         if form.is_valid():
-            p = Part(
-                number = form.cleaned_data['number'],
-                part_number = form.cleaned_data['part_number'],
-                vendor = form.cleaned_data['vendor'],
-            )
-            return HttpResponseRedirect(reverse('polls:index'))
+            form.save()
+            return HttpResponseRedirect(reverse('polls:part_list'))
 
     form = PartForm()
     context = {
         'form': form,
     }
-    return render(request, 'polls/shippment_from_po.html', context)
+    return render(request, 'polls/part_add.html', context)
 
 def vendor_list(request):
     vendor_list = Vendor.objects.all()
-    context= {
+    context = {
         'vendor_list': vendor_list,
     }
     return render(request, 'polls/vendor_list.html', context)
+
+def vendor_add(request):
+    if request.method == 'POST':
+        form = VendorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('polls:vendor_list'))
+
+    form = VendorForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'polls/vendor_add.html', context)
+
+def shippment_list(request):
+    shippment_list = Shippment.objects.all()
+    context = {
+        'shippment_list': shippment_list
+    }
+    return render(request, 'polls/shippment_list.html', context)
 
 def shippment_from_po(request, po_id):
     this_po = PO.objects.get(po_number=po_id)
@@ -72,17 +88,17 @@ def shippment_from_po(request, po_id):
                 )
             s.save()
 
-            for part in form.po_parts:
-                print(form.cleaned_data['is_received_%s' % part.part_number])
-                if form.cleaned_data['is_received_%s' % part.part_number] == True:
-                    part.is_shipped = True
-                    part.shippment = s
-                    part.save()
-                if form.cleaned_data['quantity_received_%s' % part.part_number] > 0:
-                    temp = form.cleaned_data['quantity_received_%s' % part.part_number]
-                    part.quantity_received = part.quantity_received + temp
-                    part.shippment.add(s)
-                    part.save()
+            for ordered_part in form.po_parts:
+                print(form.cleaned_data['is_received_%s' % ordered_part.part.name])
+                if form.cleaned_data['is_received_%s' % ordered_part.part.name] == True:
+                    ordered_part.is_shipped = True
+                    ordered_part.shippment = s
+                    ordered_part.save()
+                if form.cleaned_data['quantity_received_%s' % ordered_part.part.name] > 0:
+                    temp = form.cleaned_data['quantity_received_%s' % ordered_part.part.name]
+                    ordered_part.quantity_received = ordered_part.quantity_received + temp
+                    ordered_part.shippment.add(s)
+                    ordered_part.save()
             
             return HttpResponseRedirect(reverse('polls:index'))
 

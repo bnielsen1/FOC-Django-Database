@@ -12,7 +12,7 @@
     PO DATE: {{ po.date }} <br> <br>
     Notes: {{ po.notes }} <br> <br>
     {% for part in po.orderedpart_set.all %}
-        ({{ part.part.number }} - {{ part.part.part_name }}) 
+        ({{ part.part.number }} - {{ part.part.name }}) 
         || Received: {{ part.quantity_received }}/{{ part.quantity_expected }} 
         || Finished: {{ part.is_shipped }} <br> <br>
     {% endfor %}
