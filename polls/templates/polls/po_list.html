@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 </head>
 <body>
-    <title>POs (from newest to oldest)</title>
-    {% for object in object_list reversed %}
-    <li>
-        <a href="{% url 'polls:po_view' object.po_number %}"> {{ object.po_number }}</a>
-    </li>
-    {% endfor %}
+
+{% if object_list %}
+    <h2>Open POs (Click for details) - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+
+    <table>
+        <tr>
+            <th>PO Number</th>
+            <th>Vendor</th>
+        </tr>
+
+        <ul>
+        {% for object in object_list reversed %}
+            <tr>
+                <td> <a href="{% url 'polls:po_view' object.po_number %}">{{ object.po_number }}</a> </td>
+                <td>{{ object.vendor }}</td>
+            </tr>
+        {% endfor %}
+        </ul>
+
+    </table>
+{% else %}
+    <p>No POs are available.</p>
+{% endif %}
+
 </body>
 </html>

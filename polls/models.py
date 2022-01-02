@@ -6,7 +6,7 @@ from django.db import models
 class PO(models.Model):
     po_number = models.CharField(max_length=16)
     vendor = models.CharField(max_length=16)
-    date = models.DateTimeField('date ordered')
+    date = models.DateField()
     notes = models.CharField(max_length=256)
 
     def __str__(self):
@@ -30,15 +30,15 @@ class Vendor(models.Model):
 
 class Shippment(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
-    date_shipped = models.DateTimeField('date shipped')
-    date_received = models.DateTimeField('date received')
+    date_shipped = models.DateField()
+    date_received = models.DateField()
     shipped_from = models.CharField(max_length=16)
     shipped_to = models.CharField(max_length=16)
     shipper_receiver_id = models.CharField(max_length=16)
-    description = models.CharField(max_length=128)
+    description = models.CharField(max_length=128, null=True)
     manager = models.CharField(max_length=64)
-    notes = models.CharField(max_length=256)
-    due_date = models.DateTimeField('due date')
+    notes = models.CharField(max_length=256, null=True)
+    due_date = models.DateField(null=True)
 
 class OrderedPart(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)

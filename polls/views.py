@@ -48,15 +48,15 @@ def shippment_from_po(request, po_id):
         if form.is_valid():
             s = Shippment(
                 po=this_po,
-                date_shipped = timezone.now(),
-                date_received = timezone.now(),
+                date_shipped = form.cleaned_data['date_shipped'],
+                date_received = form.cleaned_data['date_received'],
                 shipped_from = form.cleaned_data['shipped_from'],
                 shipped_to = form.cleaned_data['shipped_to'],
                 shipper_receiver_id = form.cleaned_data['shipper_receiver_id'],
                 description = form.cleaned_data['description'],
                 manager = form.cleaned_data['manager'],
                 notes = form.cleaned_data['notes'],
-                due_date = timezone.now(),
+                due_date = form.cleaned_data['due_date'],
                 )
             s.save()
 
@@ -71,6 +71,7 @@ def shippment_from_po(request, po_id):
 
     form = POShippmentForm(selected_po=this_po)
     context = {
+        'po_id': po_id,
         'po': this_po,
         'form': form,
     }

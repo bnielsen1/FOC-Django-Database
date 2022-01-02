@@ -9,7 +9,10 @@
 <body>
     <form method ="post">
         {% csrf_token %}
-        {{ form }}
+        <a href="{% url 'polls:po_view' po_id %}">(Go Back)</a> <br> <br>
+        <table>
+            {{ form.as_table }}
+        </table>
         <button type="submit">Submit</button>
     </form>
 </body>

@@ -7,9 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    {{ po.po_number }} <br>
-    {{ po.vendor }} <br>
-    {{ po.date }} <br>
-    {{ po.notes }} <br>
+    PO NUMBER: {{ po.po_number }} <a href="{% url 'polls:po_list' %}">(Go Back)</a> <br> <br>
+    VENDOR: {{ po.vendor }} <br> <br>
+    PO DATE: {{ po.date }} <br> <br>
+    Notes: {{ po.notes }} <br> <br>
+    <a href="{% url 'polls:shippment_from_po' po_id=po.po_number %}">Create shippment from po!</a> <br>
 </body>
 </html>
