@@ -40,11 +40,13 @@ class Shippment(models.Model):
     notes = models.CharField(max_length=256, null=True)
     due_date = models.DateField(null=True)
 
+    def __str__(self):
+        return 'ID: ' + self.shipper_receiver_id + ' || DATE: ' + str(self.date_received) + ' || PO: ' + self.po.po_number
+
 class OrderedPart(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
-    shippment = models.ForeignKey(
+    shippment = models.ManyToManyField(
         Shippment, 
-        on_delete=models.SET_NULL, 
         auto_created=False, 
         blank=True, 
         null=True
@@ -52,7 +54,8 @@ class OrderedPart(models.Model):
     is_shipped = models.BooleanField(default=False)
     part_number = models.CharField(max_length=32)
     part_name = models.CharField(max_length=32)
-    quantity = models.CharField(max_length=32)
+    quantity_received = models.IntegerField()
+    quantity_expected = models.IntegerField()
 
     def __str__(self):
-        return self.part_name + ' - ' + self.part_number + ' - PO: ' + self.po.po_number
+        return self.part_name + ' || ' + self.part_number + ' || PO: ' + self.po.po_number

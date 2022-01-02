@@ -61,10 +61,15 @@ def shippment_from_po(request, po_id):
             s.save()
 
             for part in form.po_parts:
-                print(form.cleaned_data['part_choice_%s' % part.part_number])
-                if form.cleaned_data['part_choice_%s' % part.part_number] == True:
+                print(form.cleaned_data['is_received_%s' % part.part_number])
+                if form.cleaned_data['is_received_%s' % part.part_number] == True:
                     part.is_shipped = True
                     part.shippment = s
+                    part.save()
+                if form.cleaned_data['quantity_received_%s' % part.part_number] > 0:
+                    temp = form.cleaned_data['quantity_received_%s' % part.part_number]
+                    part.quantity_received = part.quantity_received + temp
+                    part.shippment.add(s)
                     part.save()
             
             return HttpResponseRedirect(reverse('polls:index'))

@@ -5,6 +5,10 @@ class OrderedPartInline(admin.StackedInline):
     model = OrderedPart
     extra = 0
 
+class OrderedPartShippmentMembership(admin.TabularInline):
+    model = OrderedPart.shippment.through
+    extra = 0
+
 class POAdmin(admin.ModelAdmin):
     fieldsets = [
         ('PO #', {'fields': ['po_number']}),
@@ -19,10 +23,17 @@ class ShippmentAdmin(admin.ModelAdmin):
         ('Shipper/Receiver', {'fields': ['shipped_to', 'shipped_from', 'shipper_receiver_id']}),
         ('Other Information', {'fields': ['description', 'manager', 'notes'], 'classes': ['collapse']}),
     ]
-    inlines = [OrderedPartInline]
+    inlines = [OrderedPartShippmentMembership]
+
+class OrderedPartAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('Information', {'fields': ['po', 'is_shipped', 'part_number', 'part_name', 'quantity_received', 'quantity_expected']})
+    ]
+    inlines = [OrderedPartShippmentMembership]
+    exclude = ('members',)
 
 admin.site.register(PO, POAdmin)
 admin.site.register(Part)
 admin.site.register(Shippment, ShippmentAdmin)
-admin.site.register(OrderedPart)
+admin.site.register(OrderedPart, OrderedPartAdmin)
 admin.site.register(Vendor)

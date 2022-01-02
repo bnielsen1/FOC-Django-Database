@@ -13,7 +13,8 @@ class POShippmentForm(forms.Form):
         self.po_parts = self.selected_po.orderedpart_set.filter(is_shipped=False)
         super().__init__(*args, **kwargs)
         for part in self.po_parts:
-            self.fields['part_choice_%s' % part.part_number] = forms.BooleanField(required=False)
+            self.fields['quantity_received_%s' % part.part_number] = forms.IntegerField(initial=0)
+            self.fields['is_received_%s' % part.part_number] = forms.BooleanField(required=False)
 
     date_shipped = forms.DateField(widget=DatePickerInput)
     date_received = forms.DateField(widget=DatePickerInput)

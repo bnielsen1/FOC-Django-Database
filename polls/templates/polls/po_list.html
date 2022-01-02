@@ -33,7 +33,7 @@ tr:nth-child(even) {
         <ul>
         {% for object in object_list reversed %}
             <tr>
-                <td> <a href="{% url 'polls:po_view' object.po_number %}">{{ object.po_number }}</a> </td>
+                <td>{{ object.po_number }} - <a href="{% url 'polls:po_view' object.po_number %}">(View Details)</a> </td>
                 <td>{{ object.vendor }}</td>
             </tr>
         {% endfor %}
