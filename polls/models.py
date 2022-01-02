@@ -3,9 +3,17 @@ from django.db import models
 # Part/Vendor are used for drop down list and not data
 # Other models are physical stuff that constantly gets added
 
+class Vendor(models.Model):
+    vendor_name = models.CharField(max_length=32)
+    vendor_id = models.CharField(max_length=32)
+    address = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.vendor_name
+
 class PO(models.Model):
     po_number = models.CharField(max_length=16)
-    vendor = models.CharField(max_length=16)
+    vendor = models.ForeignKey(Vendor, models.DO_NOTHING, null=True)
     date = models.DateField()
     notes = models.CharField(max_length=256)
 
@@ -14,19 +22,11 @@ class PO(models.Model):
 
 class Part(models.Model): 
     number = models.CharField(max_length=32)
-    part_name = models.CharField(max_length=32)
-    vendor = models.CharField(max_length=16)
+    name = models.CharField(max_length=32)
+    vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.part_name
-
-class Vendor(models.Model):
-    vendor_name = models.CharField(max_length=32)
-    vendor_id = models.CharField(max_length=32)
-    address = models.CharField(max_length=256)
-
-    def __str__(self):
-        return self.vendor_name
+        return self.name
 
 class Shippment(models.Model):
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
@@ -44,7 +44,10 @@ class Shippment(models.Model):
         return 'ID: ' + self.shipper_receiver_id + ' || DATE: ' + str(self.date_received) + ' || PO: ' + self.po.po_number
 
 class OrderedPart(models.Model):
+    initialized = False
     po = models.ForeignKey(PO, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING, null=True)
+    part = models.ForeignKey(Part, on_delete=models.DO_NOTHING, null=True)
     shippment = models.ManyToManyField(
         Shippment, 
         auto_created=False, 
@@ -52,10 +55,8 @@ class OrderedPart(models.Model):
         null=True
         )
     is_shipped = models.BooleanField(default=False)
-    part_number = models.CharField(max_length=32)
-    part_name = models.CharField(max_length=32)
-    quantity_received = models.IntegerField()
+    quantity_received = models.IntegerField(default=0)
     quantity_expected = models.IntegerField()
 
     def __str__(self):
-        return self.part_name + ' || ' + self.part_number + ' || PO: ' + self.po.po_number
+        return self.part.name + ' || ' + self.part.number + ' || PO: ' + self.po.po_number

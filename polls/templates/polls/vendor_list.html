@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+{% if vendor_list %}
+    <h2>All Known Vendors - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Address</th>
+        </tr>
+
+        <ul>
+        {% for vendor in vendor_list reversed %}
+            <tr>
+               <td>{{vendor.vendor_name}}</td>
+               <td>{{vendor.vendor_id}}</td>
+               <td>{{vendor.address}}</td>
+            </tr>
+        {% endfor %}
+        </ul>
+
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+</body>
+</html>

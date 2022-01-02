@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+{% if part_list %}
+    <h2>All Known Parts - <a href="{% url 'polls:index' %}">(Go back)</a></h2>
+
+    <table>
+        <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Vendor</th>
+        </tr>
+
+        <ul>
+        {% for part in part_list reversed %}
+            <tr>
+               <td>{{part.number}}</td>
+               <td>{{part.name}}</td>
+               <td>{{part.vendor.vendor_name}}</td>
+            </tr>
+        {% endfor %}
+        </ul>
+
+    </table>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+</body>
+</html>

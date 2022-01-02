@@ -27,7 +27,7 @@ class ShippmentAdmin(admin.ModelAdmin):
 
 class OrderedPartAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('Information', {'fields': ['po', 'is_shipped', 'part_number', 'part_name', 'quantity_received', 'quantity_expected']})
+        ('Information', {'fields': ['po', 'part', 'is_shipped', 'quantity_received', 'quantity_expected']})
     ]
     inlines = [OrderedPartShippmentMembership]
     exclude = ('members',)

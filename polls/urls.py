@@ -9,5 +9,6 @@ urlpatterns = [
     path('po/<int:po_id>/', views.po_view, name='po_view'),
     path('po/<int:po_id>/create_shippment', views.shippment_from_po, name='shippment_from_po'),
     path('parts/', views.part_list, name='part_list'),
+    path('parts/add', views.part_add, name='part_add'),
     path('vendors/', views.vendor_list, name='vendor_list')
 ]

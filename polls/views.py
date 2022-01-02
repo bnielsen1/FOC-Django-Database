@@ -9,7 +9,7 @@ import datetime
 from django.utils import timezone
 
 from .models import PO, Part, Shippment, Vendor
-from .forms import POShippmentForm
+from .forms import POShippmentForm, PartForm
 
 def index(request):
     return render(request, 'polls/index.html')
@@ -23,23 +23,35 @@ def po_view(request, po_id):
     return render(request, 'polls/po_view.html', {'po': po})
 
 def part_list(request):
-    title = 'Parts (Newest to oldest)'
-    data = serializers.serialize("python", Part.objects.all())
-    print(data)
+    part_list = Part.objects.all()
     context= {
-        'data': data,
-        'title': title,
+        'part_list': part_list,
     }
-    return render(request, 'polls/generic_list.html', context)
+    return render(request, 'polls/part_list.html', context)
+
+def part_add(request):
+    if request.method == 'POST':
+        form = PartForm(request.POST)
+        if form.is_valid():
+            p = Part(
+                number = form.cleaned_data['number'],
+                part_number = form.cleaned_data['part_number'],
+                vendor = form.cleaned_data['vendor'],
+            )
+            return HttpResponseRedirect(reverse('polls:index'))
+
+    form = PartForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'polls/shippment_from_po.html', context)
 
 def vendor_list(request):
-    title = 'Vendors (Newest to oldest)'
-    data = serializers.serialize("python", Vendor.objects.all())
+    vendor_list = Vendor.objects.all()
     context= {
-        'data': data,
-        'title': title,
+        'vendor_list': vendor_list,
     }
-    return render(request, 'polls/generic_list.html', context)
+    return render(request, 'polls/vendor_list.html', context)
 
 def shippment_from_po(request, po_id):
     this_po = PO.objects.get(po_number=po_id)
